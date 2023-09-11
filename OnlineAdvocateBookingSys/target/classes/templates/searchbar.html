@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeLeaf.org" th:replace="base::Layout(~{::section})">
+
+<head>
+	<meta charset="UTF-8" />
+	<!--=============== REMIXICONS ===============-->
+        <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+
+        <!--=============== CSS ===============-->
+        <link rel="stylesheet" href="assets/css/styles.css">
+	<title> This is about page </title>
+	<style>
+		
+	</style>
+	
+</head>
+
+<body>
+	<section>
+        <div class="container">
+            <form action="https://www.google.com/search" class="search" id="search-bar">
+                <input type="search" placeholder="Type something..." name="q" class="search__input">
+    
+                <div class="search__button" id="search-button">
+                    <i class="ri-search-2-line search__icon"></i>
+                    <i class="ri-close-line search__close"></i>
+                </div>
+            </form>
+        </div>
+	</section>
+</body>
+<script>
+	/*=============== SEARCH BAR JS ===============*/
+const toggleSearch = (search, button) =>{
+   const searchBar = document.getElementById(search),
+         searchButton = document.getElementById(button)
+
+   searchButton.addEventListener('click', () =>{
+       // We add the show-search class, so that the search bar expands
+       searchBar.classList.toggle('show-search')
+   })
+}
+toggleSearch('search-bar', 'search-button')
+</script>
+
+</html>

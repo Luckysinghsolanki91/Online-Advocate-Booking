@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeLeaf.org">
+
+<head>
+	<meta charset="UTF-8" />
+	<title> This is about page </title>
+	<style>
+        body {
+			display:flex;
+            justify-content: center;
+            align-items: center;            
+            height: 500px;
+            margin: 20px;
+            background-color: #f2f2f2;
+            background-position: center;            
+        background-image: url("https://png.pngtree.com/thumb_back/fh260/background/20210205/pngtree-flat-business-login-box-login-page-image_544861.jpg");
+         margin: 0;
+    padding: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            margin-top: 110%;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .social-media {
+			flex-direction: column;
+			margin-left:110px;
+			margin-right:110px;
+			margin-top:140px;
+			margin-bottom:140px;
+            display:flex;
+            justify-content: space-between;
+            gap: 10px;
+            
+        }
+
+        .google-btn,
+        .facebook-btn,
+        .instagram-btn {
+            width: 100px;
+            height: 40px;
+            background-color: blue;
+            color: white;
+            border: none;
+            justify-content: space-between;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .google-btn:hover,
+        .facebook-btn:hover,
+        .instagram-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        @media screen and (max-width: 600px) {
+            .container {
+                width: 90%;
+            }
+        }
+        .signup{
+			position:absolute;
+    top:0;
+    left: 50%; /* Center the text horizontally */
+    transform: translateX(-50%); /* Center the text horizontally */
+    padding:10px;
+			margin: 0%;
+			max-height: 100%;
+			max-width: 100%;
+			text-shadow: #f2f2f2;
+			border-color: aqua;
+			color: black;
+			font-family: cursive;
+			border-radius: 30px;
+			text-align: center;
+			text-decoration: underline;
+			background-color: darksalmon;
+		}
+		.signup:hover{
+			color: aqua;
+			
+		}
+    </style>
+	
+	
+</head>
+
+<body class="bg-gradient-primary">
+    <section>
+        <div class="container">
+            <div class="social-media">
+				<h1 class="signup">Sign Up With</h1> 
+                <button class="google-btn">Sign Up with Google</button>
+                <button class="facebook-btn">Sign Up with Facebook</button>
+                <button class="instagram-btn">Sign Up with Instagram</button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const form = document.getElementById('signup-form');
+        const usernameInput = document.getElementById('username');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirm-password');
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const username = usernameInput.value;
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+
+            if (password === confirmPassword) {
+                // Process signup logic here (e.g., send data to server, show success message, etc.)
+                alert('Sign up successful!\n\nUsername: ' + username +
+                    '\nEmail: ' + email +
+                    '\nPassword: ' + password);
+                // Clear form inputs
+                form.reset();
+            } else {
+                alert('Passwords do not match. Please try again.');
+            }
+        });
+
+        const googleBtn = document.querySelector('.google-btn');
+        const facebookBtn = document.querySelector('.facebook-btn');
+        const instagramBtn = document.querySelector('.instagram-btn');
+
+        googleBtn.addEventListener('click', function () {
+            // You can implement Google login logic here using OAuth2 and Google API
+            alert('Google login clicked!');
+        });
+
+        facebookBtn.addEventListener('click', function () {
+            // You can implement Facebook login logic here using Facebook API
+            alert('Facebook login clicked!');
+        });
+
+        instagramBtn.addEventListener('click', function () {
+            // You can implement Instagram login logic here using Instagram API
+            alert('Instagram login clicked!');
+        });
+    </script>
+</body>
+
+</html>
