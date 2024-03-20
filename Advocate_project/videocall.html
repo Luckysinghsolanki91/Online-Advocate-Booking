@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeLeaf.org" th:replace="base::Layout(~{::body})">
+
+<head>
+	<meta charset="UTF-8" />
+	<!-- Include Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-iG0GVKNSFyX0MkI3KKb9LWwKnZTSEdFO80Bwa1R5u+AyMQpsnPy0xQZDTSzmVQlUbBD4qprjvgFPoCfcgRjmw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<title> This is Online Meeting page</title>
+	<style>
+      body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  background-color: gray;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.video-container {
+  display: flex;
+  justify-content: space-between;
+  max-width: 800px;
+  color: black;
+  margin-bottom: 20px;
+}
+
+video {
+  width: 45%;
+  max-height: 300px;
+  border: 2px solid #333;
+  border-color: whitesmoke;
+  border-radius: 20px;
+  margin-left: 20px;
+  padding-left: -90px;
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+}
+#startButton {
+  background-color: rgba(2, 4, 2);
+  color: white;
+  text-align: center;
+}
+#endButton {
+  background-color: rgba(230, 43, 32);
+  color: white;
+  text-align: center;
+}
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="video-container">
+        <video id="localVideo" autoplay muted></video>
+        <video id="remoteVideo" autoplay></video>
+      </div>
+      <div class="controls">
+        <button id="startButton">Start Call</button>
+        <button id="endButton">End Call</button>
+      </div>
+      <br>
+      <div class="microphone">
+        <button id="ONButton" aria-label="Turn on microphone">
+          <i class="fas fa-microphone"></i> ON
+        </button>
+        <button id="OFFButton" aria-label="Turn off microphone">
+          <i class="fas fa-microphone-slash"></i> OFF
+        </button>
+      </div>
+      <br>
+<div class="RecordingButtons">
+  <button id="startRecButton" aria-label="Start recording">
+    <i class="fas fa-circle"></i> Start Recording
+  </button>
+  <button id="stopRecButton" aria-label="Stop recording" disabled>
+    <i class="fas fa-stop-circle"></i> Stop Recording
+  </button>
+</div>
+<div class="timer">Call Duration: <span id="timerDisplay">00:00:00</span></div>
+    <script>
+      // Get access to video and audio
+const startButton = document.getElementById("startButton");
+const endButton = document.getElementById("endButton");
+const onButton = document.getElementById("ONButton");
+const offButton = document.getElementById("OFFButton");
+const localVideo = document.getElementById("localVideo");
+const remoteVideo = document.getElementById("remoteVideo");
+const startRecButton = document.getElementById("startRecButton");
+const stopRecButton = document.getElementById("stopRecButton");
+let localStream, remoteStream;
+  let peerConnection;
+  let mediaRecorder; // MediaRecorder instance to record the call
+  let recordedChunks = []; // Array to store recorded chunks
+
+ // Function to record the call
+ function startRecording() {
+    try {
+      mediaRecorder = new MediaRecorder(localStream);
+      mediaRecorder.ondataavailable = handleDataAvailable;
+      mediaRecorder.onstop = handleRecordingStop;
+      mediaRecorder.start();
+      stopRecButton.disabled = false;
+      startRecButton.disabled = true;
+    } catch (error) {
+      console.error("Error starting recording:", error);
+    }
+  }
+
+  // Function to handle data available for recording
+  function handleDataAvailable(event) {
+    if (event.data.size > 0) {
+      recordedChunks.push(event.data);
+    }
+  }
+
+  // Function to handle recording stop
+  function handleRecordingStop() {
+    const blob = new Blob(recordedChunks, { type: "video/webm" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "video_call_recording.webm";
+    a.click();
+    recordedChunks = [];
+    stopRecButton.disabled = true;
+    startRecButton.disabled = false;
+  }
+
+  // Function to stop recording the call
+  function stopRecording() {
+    if (mediaRecorder && mediaRecorder.state !== "inactive") {
+      mediaRecorder.stop();
+      stopRecButton.disabled = true;
+      startRecButton.disabled = false;
+    }
+  }
+
+// Function to handle the start of a call
+async function startCall() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+      audio: true
+    });
+    localStream = stream;
+    localVideo.srcObject = stream;
+    createPeerConnection();
+  } catch (error) {
+    console.error("Error accessing media devices:", error);
+  }
+}
+
+// Function to create the PeerConnection
+function createPeerConnection() {
+  peerConnection = new RTCPeerConnection();
+
+  // Add tracks to the PeerConnection
+  localStream.getTracks().forEach((track) => {
+    peerConnection.addTrack(track, localStream);
+  });
+
+  // Set up event handlers for the PeerConnection
+  peerConnection.ontrack = handleRemoteStreamAdded;
+  peerConnection.onicecandidate = handleICECandidate;
+}
+
+// Function to handle remote stream added
+function handleRemoteStreamAdded(event) {
+  remoteStream = event.streams[0];
+  remoteVideo.srcObject = remoteStream;
+}
+
+// Function to handle ICE candidates
+async function handleICECandidate(event) {
+  if (event.candidate) {
+    try {
+      // Send the ICE candidate to the remote peer
+      // You would need a signaling server to exchange ICE candidates in a real-world scenario
+    } catch (error) {
+      console.error("Error sending ICE candidate:", error);
+    }
+  }
+}
+
+// Function to end the call
+function endCall() {
+  localStream.getTracks().forEach((track) => track.stop());
+  localVideo.srcObject = null;
+  remoteVideo.srcObject = null;
+  peerConnection.close();
+}
+
+// Function to turn on the microphone
+async function turnOnMicrophone() {
+  try {
+    const audioStream = await navigator.mediaDevices.getUserMedia({
+      
+      audio: true
+    });
+    const audioTrack = audioStream.getAudioTracks()[0];
+    localStream.addTrack(audioTrack);
+  } catch (error) {
+    console.error("Error accessing microphone:", error);
+  }
+}
+
+// Function to turn off the microphone
+function turnOffMicrophone() {
+  const audioTrack = localStream.getAudioTracks()[0];
+  if (audioTrack) {
+    audioTrack.stop();
+    localStream.removeTrack(audioTrack);
+  }
+}
+
+/*My code*/
+
+let callStartTime;
+  let timerInterval;
+
+  // Function to start the call timer
+  function startCallTimer() {
+    callStartTime = new Date();
+    timerInterval = setInterval(updateCallDuration, 1000);
+  }
+
+  // Function to update the call duration display
+  function updateCallDuration() {
+    const currentTime = new Date();
+    const duration = new Date(currentTime - callStartTime);
+    const hours = duration.getUTCHours().toString().padStart(2, "0");
+    const minutes = duration.getUTCMinutes().toString().padStart(2, "0");
+    const seconds = duration.getUTCSeconds().toString().padStart(2, "0");
+    document.getElementById("timerDisplay").textContent = `${hours}:${minutes}:${seconds}`;
+  }
+
+  // Function to stop the call timer
+  function stopCallTimer() {
+    clearInterval(timerInterval);
+  }
+
+  // Function to handle the start of a call
+  async function startCall() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true,
+      });
+      localStream = stream;
+      localVideo.srcObject = stream;
+      createPeerConnection();
+      startCallTimer(); // Start the call timer when the call starts
+    } catch (error) {
+      console.error("Error accessing media devices:", error);
+    }
+  }
+
+  // Function to end the call
+  function endCall() {
+    localStream.getTracks().forEach((track) => track.stop());
+    localVideo.srcObject = null;
+    remoteVideo.srcObject = null;
+    peerConnection.close();
+    stopCallTimer(); // Stop the call timer when the call ends
+  }
+// Attach event listeners
+startButton.addEventListener("click", startCall);
+endButton.addEventListener("click", endCall);
+onButton.addEventListener("click", turnOnMicrophone);
+offButton.addEventListener("click", turnOffMicrophone);
+startRecButton.addEventListener("click", startRecording);
+stopRecButton.addEventListener("click", stopRecording);
+    </script>
+  </body>
+</html>
