@@ -1,0 +1,149 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+body {
+    min-height: 100vh;
+}
+
+li {
+    list-style: none;
+    color: white;
+}
+
+a {
+    text-decoration: none;
+}
+
+h1 {
+    color: white;
+}
+
+.btn {
+    background: #25041d;
+    color: white;
+    padding: 5px 10px;
+    text-align: center;
+}
+
+.btn:hover {
+    color: #25041d;
+    background: white;
+    padding: 3px 8px;
+    border: 2px solid #25041d;
+}
+
+.side-bar {
+    position: fixed;
+    background: #47143a;
+    width: 20vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.side-bar .logo-name {
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.side-bar li {
+    font-size: 24px;
+    padding: 10px 40px;
+    display: flex;
+    align-items: center;
+}
+
+.side-bar li:hover {
+    background: white;
+    color: #47143a;
+}
+
+.container {
+    position: absolute;
+    right: 0;
+    width: 80vw;
+    height: 100vh;
+    background: #f1f1f1;
+}
+
+.container .header {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 80vw;
+    height: 10vh;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px 0 rgb(0, 0, 0, 0.2);
+}
+
+.container .header .nav {
+    width: 90%;
+    display: flex;
+    align-items: center;
+}
+
+.container .header .nav .search {
+    flex: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container .header .nav .search input[type=text] {
+    border: none;
+    background: #f1f1f1;
+    padding: 10px;
+    width: 50%;
+}
+
+.container .header .nav .search button {
+    width: 40px;
+    height: 40px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container .header .nav .user {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.container .header .nav .user .img-design {
+    position: relative;
+    width: 50px;
+    height: 50px;
+}
+
+.container .content {
+    position: relative;
+    margin-top: 10vh;
+    min-height: 90vh;
+}
+
+.container .content .cards {
+    padding: 20px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.container .content .cards .card {
+    width: 250px;
+    height: 150px;
+    background: white;
+    margin: 20px 10px;
+}
