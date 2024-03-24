@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add New Advocate</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #0056b3;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 30px;
+      text-align: center;
+      background-color: #f4f4f4;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    form label {
+      display: block;
+      margin-top: 10px;
+      margin-right: 50px;
+    }
+
+    form input {
+      width: 90%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+
+    form button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    form button:hover {
+      background-color: #0056b3;
+    }
+    #image-upload-container {
+    border: 2px dashed #ccc;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+}
+
+#image-upload-container p {
+    margin: 0;
+}
+
+#advocateImage {
+    display: none; /* Hide the file input */
+}
+
+  </style>
+</head>
+<body>
+  <h1>Step 1/5</h1>
+  <div class="container">
+    <h1>Add New Advocate</h1>
+    <form id="account-settings-form" method="post" onsubmit="return submitFormAndRedirect();">
+      <label for="fullName">Full Name:</label>
+      <input type="text" id="fullName" name="fullName" placeholder="Full Name" required>
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" placeholder="Email" required>
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" placeholder="Password" required>
+
+      <label for="advocateDegree">Advocate Degree:</label>
+      <input type="text" id="advocateDegree" name="advocateDegree" placeholder="Advocate Degree" required>
+      <br>
+      <label for="advocateImage">Upload Advocate Image:</label>
+      <div id="image-upload-container" class="dropzone">
+        <input type="file" id="advocateImage" name="advocateImage" accept="image/png, image/jpeg, image/gif" required>
+        <p>Drag & Drop an image here or click to select one.</p>
+      </div>
+
+      <button type="submit">Save</button>
+      <button type="button" onclick="submitFormAndRedirect()">Next</button>
+
+    </form>
+  </div>
+  <script>
+    // Get the file input and dropzone container
+    const fileInput = document.getElementById('advocateImage');
+    const dropzone = document.getElementById('image-upload-container');
+
+    // Add event listeners for drag-and-drop
+    dropzone.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        dropzone.classList.add('dragover');
+    });
+
+    dropzone.addEventListener('dragleave', function(e) {
+        e.preventDefault();
+        dropzone.classList.remove('dragover');
+    });
+
+    dropzone.addEventListener('drop', function(e) {
+        e.preventDefault();
+        dropzone.classList.remove('dragover');
+        
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            fileInput.files = files;
+        }
+    });
+
+    // Also allow users to click the dropzone to select a file
+    dropzone.addEventListener('click', function() {
+        fileInput.click();
+    });
+
+    //OnSubmit method
+    function submitFormAndRedirect() {
+        // Assuming "account-settings-form" is the ID of your form
+        document.getElementById('account-settings-form').submit();
+        location.href = 'AdvoVisiterCard.html';
+        // Return false to prevent the form from submitting via traditional means
+        return false;
+    }
+
+    // Listen for file selection and update the dropzone text
+    fileInput.addEventListener('change', function() {
+        if (fileInput.files.length > 0) {
+            const fileName = fileInput.files[0].name;
+            dropzone.querySelector('p').textContent = fileName;
+        }
+    });
+  </script>
+</body>
+</html>
