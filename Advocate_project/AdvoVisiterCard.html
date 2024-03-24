@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: linear-gradient(0deg, #fff 0%, #1f1f1f 100%);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      position: relative;
+      align-items: center;
+      justify-content:center;
+      padding-left: 520px;
+    }
+
+    .flip-box {
+      background-color: transparent;
+      width: 640px;
+      height: 345px;
+      perspective: 1000px;
+    }
+
+    .container::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 25px;
+      background: #000;
+      filter: blur(35px);
+      border-radius: 25px;
+      transition: 1.2s;
+      z-index: -1;
+      perspective: 0px;
+    }
+
+    .flip-box-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 1.2s;
+      transform-style: preserve-3d;
+    }
+
+    .container:hover .flip-box-inner {
+      transform: rotateY(180deg);
+    }
+
+    .container:hover:after {
+      transform: translate(-50%, -50%) rotateY(-180deg);
+    }
+
+    .flip-box-front,
+    .flip-box-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      border-radius: 25px;
+    }
+
+    .flip-box-front {
+      background-image: url('./images/CardFront.png');
+    }
+
+    .flip-box-back {
+
+      background-image: url('./images/CardBack.png');
+      transform: rotateY(180deg);
+    }
+    .btn{
+      color: white;
+      font-size: 20px;
+    }
+  </style>
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="flip-box">
+      <div class="flip-box-inner">
+        <div class="flip-box-front"></div>
+        <div class="flip-box-back"></div>
+      </div>
+    </div>
+  </div>
+  <div class="btn"><a href="AdvocatProfilePage.html">next</a></div>
+</body>
+
+</html>
